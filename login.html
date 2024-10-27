@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Silk Road Car Club</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Header with Navigation Bar -->
+<header class="bg-dark text-white py-3">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center">
+      <h1 class="mb-0">Silk Road Car Club</h1>
+      <nav class="navbar navbar-expand-lg navbar-dark">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="faq.html">FAQ</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="gallery.html">Gallery</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contact.html">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<!-- Login Form -->
+<div class="container vh-100 d-flex justify-content-center align-items-center">
+  <div class="card p-4" style="width: 20rem;">
+    <h2 class="text-center mb-4">Login</h2>
+    <form id="loginForm">
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" class="form-control" id="username" placeholder="Enter your username" required>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+      </div>
+      <button type="submit" class="btn btn-dark w-100">Login</button>
+      <p id="error-message" class="text-danger mt-3" style="display: none;">Invalid username or password.</p>
+    </form>
+  </div>
+</div>
+
+<!-- Dark Mode Toggle -->
+<label class="switch position-fixed" style="top: 10px; right: 10px;">
+  <input type="checkbox" id="themeToggle">
+  <span class="slider round"></span> Dark Mode
+</label>
+
+<!-- JavaScript for Login Functionality and Dark Mode -->
+<script>
+  // Hardcoded credentials for simplicity
+  const validUsername = 'stark';
+  const validPassword = 'ironman';
+
+  // Handle form submission
+  document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    // Check credentials
+    if (username === validUsername && password === validPassword) {
+      // Store login state in local storage
+      localStorage.setItem('loggedIn', 'true');
+      // Redirect to index.html
+      window.location.href = 'index.html';
+    } else {
+      // Show error message
+      document.getElementById('error-message').style.display = 'block';
+    }
+  });
+
+  // Redirect if already logged in
+  if (localStorage.getItem('loggedIn') === 'true') {
+    window.location.href = 'index.html';
+  }
+
+  // Dark Mode Functionality
+  const themeToggle = document.getElementById('themeToggle');
+  const currentTheme = localStorage.getItem('theme');
+
+  // Apply the saved theme on page load
+  if (currentTheme === 'dark') {
+    document.body.classList.add('dark-theme');
+    themeToggle.checked = true;
+  }
+
+  // Toggle theme and save the user's preference
+  themeToggle.addEventListener('change', () => {
+    if (themeToggle.checked) {
+      document.body.classList.add('dark-theme');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.body.classList.remove('dark-theme');
+      localStorage.setItem('theme', 'light');
+    }
+  });
+</script>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
