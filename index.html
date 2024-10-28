@@ -64,8 +64,12 @@
     </div>
 
     <form id="loginForm">
+        <label for="username">Username</label>
         <input type="text" id="username" placeholder="Enter Username" required>
+
+        <label for="password">Password</label>
         <input type="password" id="password" placeholder="Enter Password" required>
+
         <button type="submit">Login</button>
     </form>
     <p id="welcomeMessage"></p>
@@ -100,7 +104,7 @@
         const now = new Date();
         const offsetHours = -1;
         now.setHours(now.getHours() + offsetHours);
-        const formattedDateTime = now.toLocaleString('en-KZ', {
+        document.getElementById('currentDateTime').textContent = now.toLocaleString('en-KZ', {
             weekday: 'long',
             year: 'numeric',
             month: 'long',
@@ -108,7 +112,6 @@
             hour: '2-digit',
             minute: '2-digit'
         });
-        document.getElementById('currentDateTime').textContent = formattedDateTime;
     }
 
     displayDateTime();
@@ -166,6 +169,41 @@
             localStorage.setItem('theme', 'light');
         }
     });
+</script>
+
+<script>
+    const loginForm = document.getElementById('loginForm');
+    const welcomeMessage = document.getElementById('welcomeMessage');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    // Function to display user if already logged in
+    function displayUser() {
+        const savedUsername = localStorage.getItem('username'); // Get username from local storage
+        if (savedUsername) {
+            welcomeMessage.textContent = `Welcome, ${savedUsername}!`;
+            loginForm.style.display = 'none'; // Hide login form
+            logoutBtn.style.display = 'block'; // Show logout button
+        }
+    }
+
+    // Event listener for form submission
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault(); // Prevent form from refreshing the page
+        const username = document.getElementById('username').value; // Get username input value
+        localStorage.setItem('username', username); // Store username in local storage
+        displayUser(); // Display welcome message
+    });
+
+    // Event listener for logout button
+    logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('username'); // Remove username from local storage
+        welcomeMessage.textContent = ''; // Clear welcome message
+        loginForm.style.display = 'block'; // Show login form
+        logoutBtn.style.display = 'none'; // Hide logout button
+    });
+
+    // Check on page load if the user is already logged in
+    window.onload = displayUser;
 </script>
 </body>
 </html>

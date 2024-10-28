@@ -24,7 +24,7 @@
         <div class="d-flex justify-content-between align-items-center">
             <h1 class="mb-0">Silk Road Car Club</h1>
             <div>
-                <input type="checkbox" id="themeToggle" class="form-check-input"> Dark Mode
+                <label for="themeToggle"></label><input type="checkbox" id="themeToggle" class="form-check-input"> Dark Mode
             </div>
             <nav class="navbar navbar-expand-lg navbar-dark">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -197,8 +197,51 @@
     });
 </script>
 
+<script>
+    const carFilter = document.getElementById('carFilter');
+
+    // Check for saved filter on page load
+    const savedFilter = localStorage.getItem('carFilter');
+    if (savedFilter) {
+        carFilter.value = savedFilter; // Set the dropdown to the saved filter
+        applyFilter(savedFilter); // Apply the saved filter to display the relevant cars
+    }
+
+    // Event listener for dropdown change
+    carFilter.addEventListener('change', function() {
+        const selectedFilter = this.value;
+        localStorage.setItem('carFilter', selectedFilter); // Save the selected filter in local storage
+        applyFilter(selectedFilter); // Apply the selected filter
+    });
+
+    // Function to apply the filter
+    function applyFilter(filter) {
+        const allSlides = Array.from(document.querySelectorAll('.carousel-slide'));
+        let visibleSlides = [];
+
+        // Check if 'All Cars' is selected
+        if (filter === 'all') {
+            allSlides.forEach(slide => slide.style.display = 'block');
+            visibleSlides = allSlides;
+        } else {
+            allSlides.forEach(slide => {
+                const carCategory = slide.getAttribute('data-category');
+                if (carCategory === filter) {
+                    slide.style.display = 'block';
+                    visibleSlides.push(slide);
+                } else {
+                    slide.style.display = 'none';
+                }
+            });
+        }
+
+        // Update the carousel slides to only show visible ones
+        carSlides = visibleSlides;
+        showSlide(0); // Show the first visible slide
+    }
+</script>
+
 <!-- Bootstrap JS and dependencies -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 </html>
